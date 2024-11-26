@@ -5,9 +5,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -38,7 +41,10 @@ public class Book {
 	private Boolean illustrations;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "TAGS")
+	@CollectionTable(name = "TAGS",
+						joinColumns = { @JoinColumn(name = "BOOKS_ID")},
+						foreignKey = @ForeignKey(name = "FK_TAGS__BOOKS_ID"),
+						indexes = { @Index(name = "IX_TAGS_VALUE", columnList = "VALUE") })
 	@Column(name = "VALUE")
 	private List<String> tags;
 	
